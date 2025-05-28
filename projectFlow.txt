@@ -3,7 +3,8 @@
 3. Do a git add-commit-push before initializing dvc.
 # pip install dvc
 4. Now we do "dvc init" (creates .dvcignore, .dvc)
-5. Now do "mkdir S3" (creates a new S3 directory)
+5. Now do "mkdir S3" (creates a new S3 directory)  --- Local datastore for understanding
+
 6. Now we do "dvc remote add -d myremote S3"
 7. Next "dvc add data/" 
    Now it will ask to do: ("git rm -r --cached 'data'" and "git commit -m "stop tracking data"")
@@ -16,3 +17,27 @@
 12. Then git add-commit-push (we're saving V2 of our data at this point)
 13. Check dvc/git status, everything should be upto date.
 14. Now repeat step 10-12 for v3 of data.
+
+
+
+Docs:
+
+Check out the documentation: <https://dvc.org/doc>
+- Get help and share ideas: <https://dvc.org/chat>
+- Star us on GitHub: <https://github.com/iterative/dvc>
+
+ERROR:  output 'data' is already tracked by SCM (e.g. Git).
+    You can remove it from Git, then add to DVC.
+        To stop tracking from Git:
+            git rm -r --cached 'data'
+            git commit -m "stop tracking data"
+
+DVC Code:
+
+To track the changes with git, run:
+
+        git add .gitignore data.dvc
+
+To enable auto staging, run:
+
+        dvc config core.autostage true

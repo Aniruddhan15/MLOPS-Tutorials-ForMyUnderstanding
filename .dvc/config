@@ -1,0 +1,4 @@
+[core]
+    remote = aniremote
+['remote "aniremote"']
+    url = ../S3
