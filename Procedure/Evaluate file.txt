@@ -1,0 +1,45 @@
+Evaluate file
+
+
+import pandas as pd
+import yaml
+import joblib
+import json
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.model_selection import train_test_split
+
+config = yaml.safe_load(open("params.yaml"))
+data_path = config["data"]["processed_path"]
+eval_path = config["evaluate"]["metrics_path"]
+params = config["train"]
+
+def evaluate_models():
+    df = pd.read_csv(data_path)
+    X = df.iloc[:, :-1]
+    y = df.iloc[:, -1]
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=params["test_size"], random_state=params["random_state"]
+    )
+
+    scores = {}
+
+    for model_name in params["models"]:
+        model = joblib.load(f"models/model_{model_name}.pkl")
+        preds = model.predict(X_test)
+
+        scores[model_name] = {
+            "accuracy": accuracy_score(y_test, preds),
+            "precision": precision_score(y_test, preds, average="weighted", zero_division=0),
+            "recall": recall_score(y_test, preds, average="weighted", zero_division=0),
+            "f1": f1_score(y_test, preds, average="weighted", zero_division=0)
+        }
+
+    os.makedirs(os.path.dirname(eval_path), exist_ok=True)
+    with open(eval_path, "w") as f:
+        json.dump(scores, f, indent=2)
+
+    print(f"Evaluation metrics saved to {eval_path}")
+
+if __name__ == "__main__":
+    evaluate_models()
