@@ -1,0 +1,29 @@
+Preprocess file
+
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+import yaml
+import os
+
+params = yaml.safe_load(open("params.yaml"))["preprocess"]
+data_paths = yaml.safe_load(open("params.yaml"))["data"]
+
+def preprocess_data():
+    df = pd.read_csv(data_paths["raw_path"])
+
+    # Encode categorical target
+    if params["encode_target"]:
+        le = LabelEncoder()
+        df.iloc[:, -1] = le.fit_transform(df.iloc[:, -1])
+
+    # Scale feature columns
+    if params["scale"]:
+        scaler = StandardScaler()
+        df.iloc[:, :-1] = scaler.fit_transform(df.iloc[:, :-1])
+
+    os.makedirs(os.path.dirname(data_paths["processed_path"]), exist_ok=True)
+    df.to_csv(data_paths["processed_path"], index=False)
+    print(f"Saved processed data to {data_paths['processed_path']}")
+
+if __name__ == "__main__":
+    preprocess_data()

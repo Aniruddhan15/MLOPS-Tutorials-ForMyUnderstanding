@@ -1,0 +1,29 @@
+Pipeline and init file
+
+from src import preprocess, train, evaluate
+
+def run_pipeline():
+    print("\n📦 Preprocessing Data")
+    preprocess.preprocess_data()
+
+    print("\n🤖 Training Models")
+    train.train_models()
+
+    print("\n📊 Evaluating Models")
+    evaluate.evaluate_models()
+
+if __name__ == "__main__":
+    run_pipeline()
+
+
+
+
+# src/__init__.py
+
+def print_banner(title):
+    print("="*40)
+    print(f"   {title}")
+    print("="*40)
+
+
+
