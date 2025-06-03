@@ -1,0 +1,27 @@
+Table mapping
+
+| Task                    | File            | Tools/Functions Involved                      |
+| ----------------------- | --------------- | --------------------------------------------- |
+| Data Reading            | `preprocess.py` | `pd.read_csv()`                               |
+| Data Cleaning (if any)  | `preprocess.py` | `dropna()`, `fillna()`, etc.                  |
+| Encoding                | `preprocess.py` | `LabelEncoder()`                              |
+| Scaling                 | `preprocess.py` | `StandardScaler()`                            |
+| Train-Test Split        | `train.py`      | `train_test_split()`                          |
+| Model Training          | `train.py`      | `LogisticRegression()`, etc.                  |
+| Save Trained Models     | `train.py`      | `joblib.dump()`                               |
+| Load Trained Models     | `evaluate.py`   | `joblib.load()`                               |
+| Model Evaluation        | `evaluate.py`   | `accuracy_score()`, `f1_score()`, etc.        |
+| Save Evaluation Results | `evaluate.py`   | `json.dump()`                                 |
+| Link Everything         | `pipeline.py`   | Import all 3 scripts and run them in sequence |
+
+
+Stage:
+
+| File            | Purpose                                               | Example Components / Code Snippets                            |
+| --------------- | ----------------------------------------------------- | ------------------------------------------------------------- |
+| `preprocess.py` | Data loading, cleaning, encoding, scaling, saving     | `pd.read_csv()`, `LabelEncoder`, `StandardScaler`, `to_csv()` |
+| `train.py`      | Splitting, training models, saving them               | `train_test_split`, `model.fit()`, `joblib.dump()`            |
+| `evaluate.py`   | Loading models, evaluating, saving metrics            | `accuracy_score`, `precision_score`, `json.dump()`            |
+| `__init__.py`   | Optional utils, shared functions, or pipeline imports | Functions like `get_data()`, `save_model()`, etc.             |
+| `params.yaml`   | Configuration: paths, model names, flags, split ratio | See below for full YAML                                       |
+| `pipeline.py`   | Main orchestrator for running all scripts together    | `from src import preprocess, train, evaluate`                 |

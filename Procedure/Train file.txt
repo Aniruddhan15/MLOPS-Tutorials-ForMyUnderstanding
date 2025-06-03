@@ -1,0 +1,40 @@
+Train file
+
+
+import pandas as pd
+import yaml
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+import joblib
+import os
+
+params = yaml.safe_load(open("params.yaml"))["train"]
+data_path = yaml.safe_load(open("params.yaml"))["data"]["processed_path"]
+
+def train_models():
+    df = pd.read_csv(data_path)
+    X = df.iloc[:, :-1]
+    y = df.iloc[:, -1]
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=params["test_size"], random_state=params["random_state"]
+    )
+
+    models = {
+        "logistic": LogisticRegression(),
+        "decisiontree": DecisionTreeClassifier(),
+        "knn": KNeighborsClassifier()
+    }
+
+    os.makedirs("models", exist_ok=True)
+
+    for model_name in params["models"]:
+        model = models[model_name]
+        model.fit(X_train, y_train)
+        joblib.dump(model, f"models/model_{model_name}.pkl")
+        print(f"Trained and saved {model_name} model.")
+
+if __name__ == "__main__":
+    train_models()
