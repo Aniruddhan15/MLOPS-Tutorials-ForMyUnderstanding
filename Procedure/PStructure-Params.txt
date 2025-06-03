@@ -1,0 +1,59 @@
+ENd to End Pipeline project steps:
+
+
+Boiler plate Template:
+
+# 1. Load data
+# 2. Preprocess (encode, scale)
+# 3. Train/test split
+# 4. Train model(s)
+# 5. Evaluate
+
+ml_project/
+│
+├── src/
+│   ├── __init__.py
+│   ├── preprocess.py
+│   ├── train.py
+│   ├── evaluate.py
+│
+├── data/
+│   ├── raw/
+│   │   └── data.csv
+│   └── processed/
+│       └── processed.csv
+│
+├── models/
+│   └── model_<name>.pkl
+│
+├── reports/
+│   └── metrics.json
+│
+├── params.yaml
+├── pipeline.py        ← (to run full flow)
+├── README.md
+└── requirements.txt
+
+
+🧾 Project Structure Guide (for README.md)
+📁 1. param.yaml
+Configuration file to store all file paths and parameters in one place.
+
+
+Code:
+
+data:
+  raw_path: data/raw/data.csv
+  processed_path: data/processed/processed.csv
+
+preprocess:
+  encode_target: True
+  scale: True
+
+train:
+  test_size: 0.2
+  random_state: 42
+  models: ["logistic", "knn", "decisiontree"]
+
+evaluate:
+  metrics_path: reports/metrics.json
